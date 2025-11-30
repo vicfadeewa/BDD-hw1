@@ -7,6 +7,7 @@ import page.DashBoardPage;
 import page.LoginPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static data.DataHelper.generateInvalidAmount;
 import static data.DataHelper.generateValidAmount;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -26,8 +27,6 @@ public class MoneyTransferTest {
         var verificationCode = DataHelper.getVerificationCode();
 
         dashboardPage = verificationPage.validVerity(verificationCode);
-        //dashboardPage = open("http://localhost:9999/dashboard", DashBoardPage.class);
-
 
         firstCardInfo = DataHelper.getFirstCardInfo();
         secondCardInfo = DataHelper.getSecondCardInfo();
@@ -37,6 +36,7 @@ public class MoneyTransferTest {
     }
 
     @Test
+        //позитивный тест
     void shouldTransferFromFirstToSecond() {
         var amount = generateValidAmount(firstCardBalance);
         var expectedBalanceFirstCard = firstCardBalance - amount;
@@ -47,6 +47,20 @@ public class MoneyTransferTest {
         assertAll(
                 () -> dashboardPage.checkCardBalance(firstCardInfo, expectedBalanceFirstCard),
                 () -> dashboardPage.checkCardBalance(secondCardInfo, expectedBalanceSecondCard)
+        );
+    }
+
+    @Test
+        //негативный тест
+    void shouldGetErrorMessageIfAmountMoreBalance() {
+        var amount = generateInvalidAmount(secondCardBalance);
+        var transferPage = dashboardPage.selectCardToTransfer(firstCardInfo);
+        transferPage.makeTransfer(String.valueOf(amount), secondCardInfo);
+        assertAll(
+                () -> transferPage.findErrorMassage("Сумма перевода превышает остаток на карте списания"),
+                () -> dashboardPage.reloadDashboardPage(),
+                () -> dashboardPage.checkCardBalance(firstCardInfo, firstCardBalance),
+                () -> dashboardPage.checkCardBalance(secondCardInfo, secondCardBalance)
         );
     }
 }
