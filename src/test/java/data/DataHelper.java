@@ -33,6 +33,7 @@ public class DataHelper {
     public static int generateValidAmount(int balance) {
         return Math.abs(balance) / 10;
     }
+
     public static int generateInvalidAmount(int balance) {
         return Math.abs(balance) + 1;
     }
