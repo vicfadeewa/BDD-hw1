@@ -25,7 +25,10 @@ public class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCode();
 
-        verificationPage.validVerity(verificationCode);
+        dashboardPage = verificationPage.validVerity(verificationCode);
+        //dashboardPage = open("http://localhost:9999/dashboard", DashBoardPage.class);
+
+
         firstCardInfo = DataHelper.getFirstCardInfo();
         secondCardInfo = DataHelper.getSecondCardInfo();
         firstCardBalance = dashboardPage.getCardBalance(firstCardInfo);

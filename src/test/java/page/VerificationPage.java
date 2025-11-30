@@ -7,14 +7,16 @@ import data.DataHelper;
 import static com.codeborne.selenide.Selenide.$;
 
 public class VerificationPage {
-    private SelenideElement verifyCodeField = $("[data-test-id=code] input");
-    private SelenideElement verifyButton = $("[data-test-id=action-verify]");
+    private final SelenideElement verifyCodeField = $("[data-test-id=code] input");
+    private final SelenideElement verifyButton = $("[data-test-id=action-verify]");
 
-    public void checkPageVisibility(){
+    public VerificationPage() {
         verifyCodeField.shouldBe(Condition.visible);
     }
-    public void validVerity(DataHelper.VerificationCode verificationCode){
+
+    public DashBoardPage validVerity(DataHelper.VerificationCode verificationCode) {
         verifyCodeField.setValue(verificationCode.getCode());
         verifyButton.click();
+        return new DashBoardPage();
     }
 }

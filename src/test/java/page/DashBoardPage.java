@@ -21,11 +21,6 @@ public class DashBoardPage {
         heading.shouldBe(visible);
     }
 
-    private SelenideElement getCard(DataHelper.CardInfo cardInfo) {
-        return cards.findBy(Condition.attribute("data-test-id", cardInfo.getTestId()));
-    }
-
-
     public int getCardBalance(DataHelper.CardInfo cardInfo) {
         var text = getCard(cardInfo).getText();
         return extractBalance(text);
@@ -35,6 +30,11 @@ public class DashBoardPage {
         getCard(cardInfo).$("button").click();
         return new TransferPage();
     }
+
+    private SelenideElement getCard(DataHelper.CardInfo cardInfo) {
+        return cards.findBy(Condition.attribute("data-test-id", cardInfo.getTestId()));
+    }
+
 
     public void reloadDashboardPage() {
         reloadButton.click();
